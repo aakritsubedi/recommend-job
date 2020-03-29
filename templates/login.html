@@ -1,0 +1,36 @@
+{% extends "auth-layout.html" %} {% block content %}
+<div class="logo">
+  <a>
+    <img src="static/images/resource/logo10.png" alt="Job Hunt"/>
+    </a>
+</div>
+<form>
+  <h2><small>Login</small></h2>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Please enter your email address"
+        required
+      />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input
+        type="password"
+        class="form-control"
+        placeholder="Please type your password"
+        required
+      />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <button type="submit">Login</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

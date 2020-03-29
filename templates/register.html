@@ -1,0 +1,58 @@
+{% extends "auth-layout.html" %} {% block content %}
+<div class="logo">
+  <a>
+    <img src="static/images/resource/logo10.png" alt="Job Hunt" />
+  </a>
+</div>
+<form>
+  <h2><small>Register</small></h2>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input
+        type="text"
+        autocomplete="off"
+        class="form-control"
+        placeholder="Please enter your/company name"
+        required
+      />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input
+        type="text"
+        autocomplete="off"
+        class="form-control"
+        placeholder="Please enter your email address"
+        required
+      />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input
+        type="password"
+        autocomplete="off"
+        class="form-control"
+        placeholder="Please type your password"
+        required
+      />
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <select class="form-control" required>
+        <option value="">Please select account type</option>
+        <option value="personal">Personal</option>
+        <option value="company">Company</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <button type="submit">Register</button>
+    </div>
+  </div>
+</form>
+
+{% endblock %}
