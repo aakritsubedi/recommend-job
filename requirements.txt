@@ -1,4 +1,8 @@
 gunicorn
 Flask
 python-dotenv
-
+psycopg2
+psycopg2-binary
+Flask-SQLAlchemy
+Flask-Migrate
+alembic

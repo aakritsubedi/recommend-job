@@ -4,55 +4,55 @@
     <img src="static/images/resource/logo10.png" alt="Job Hunt" />
   </a>
 </div>
-<form>
-  <h2><small>Register</small></h2>
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <input
-        type="text"
-        autocomplete="off"
-        class="form-control"
-        placeholder="Please enter your/company name"
-        required
-      />
+<div class="col-md-5 mb-4">
+  <form action="/register" method="POST">
+    {% if msg %}
+    <div class="alert alert-warning" role="alert">
+      {{ msg }}
     </div>
-  </div>
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <input
-        type="text"
-        autocomplete="off"
-        class="form-control"
-        placeholder="Please enter your email address"
-        required
-      />
+    {% endif %}
+    <h2><small>Register</small></h2>
+    <div class="form-row">
+        <input
+          type="text"
+          autocomplete="off"
+          class="form-control"
+          placeholder="Please enter your/company name"
+          name="name"
+          required
+        />
     </div>
-  </div>
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <input
-        type="password"
-        autocomplete="off"
-        class="form-control"
-        placeholder="Please type your password"
-        required
-      />
+    <div class="form-row">
+        <input
+          type="text"
+          autocomplete="off"
+          class="form-control"
+          placeholder="Please enter your email address"
+          name="email"
+          required
+        />
     </div>
-  </div>
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <select class="form-control" required>
-        <option value="">Please select account type</option>
-        <option value="personal">Personal</option>
-        <option value="company">Company</option>
-      </select>
+    <div class="form-row">
+        <input
+          type="password"
+          autocomplete="off"
+          class="form-control"
+          placeholder="Please type your password"
+          name="password"
+        />
     </div>
-  </div>
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <button type="submit">Register</button>
+    <div class="form-row">
+        <select class="form-control" name="user_type" required>
+          <option value="">Please select account type</option>
+          <option value="personal">Personal</option>
+          <option value="company">Company</option>
+        </select>
     </div>
-  </div>
-</form>
+    <div class="form-row">
+        <button type="submit">Register</button>
+      </div>
+    </div>
+  </form>
+</div>
 
 {% endblock %}

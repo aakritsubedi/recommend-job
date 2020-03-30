@@ -1,22 +1,84 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, redirect, url_for, render_template, request, session
+from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
-DEVELOPER_KEY = os.getenv("DEVELOPER_KEY")
-
 app = Flask(__name__)
 
+app.secret_key = os.getenv("SECRET_KEY")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.debug = os.getenv("DEBUG")
+app.permanent_session_lifetime = timedelta(minutes=5)
 
-@app.route('/')
+# Creating DB Object
+db = SQLAlchemy(app)
+
+
+class User(db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    email = db.Column(db.String(255), unique=True)
+    password = db.Column(db.String(255))
+    user_type = db.Column(db.String(25), default="personal")
+    status = db.Column(db.Integer, default=0)
+
+    def __init__(self, name, email, password, user_type, status):
+        self.name = name
+        self.email = email
+        self.password = password
+        self.user_type = user_type
+        self.status = status
+
+
+@app.route("/")
 def index():
-    return render_template('home.html')
-
-@app.route('/login')
+    return render_template("home.html")
+    
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template('login.html')
+    if request.method == "GET":
+        return render_template("login.html")
+    else:
+      email = request.form["email"]
+      password = request.form["password"]
 
-@app.route('/register')
+      if email == "" or password == "":
+        return render_template("login", msg="Please enter required fields.")
+      
+      user = User.query.filter(email==email and password==password).all()
+      if len(user) == 0:
+        session['user_id'] = user.id
+        session['name'] = user.name
+        session['email'] = user.email
+        return redirect(url_for("index"))
+      
+      return render_template("login.html", msg="Username or Password incorrect. Please try again.")
+
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template('register.html')
+    if request.method == "GET":
+        return render_template("register.html")
+    else:
+        name = request.form["name"]
+        email = request.form["email"]
+        password = request.form["password"]
+        userType = request.form["user_type"]
+
+        if name == "" or email == "" or password == "" or userType == "":
+            return render_template("register.html", msg="Please enter required fields.")
+
+        if db.session.query(User).filter(User.email == email).count() != 0:
+          return render_template("login", msg="The user email already exists. Please try to login.")
+        else:
+            data = User(name, email, password, userType, 0)
+            db.session.add(data)
+            db.session.commit()
+            session['user_id']= data
+            session['name'] = name
+            session['email'] = email
+            return redirect(url_for("index"))
