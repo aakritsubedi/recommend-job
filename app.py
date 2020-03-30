@@ -38,26 +38,42 @@ class User(db.Model):
 @app.route("/")
 def index():
     return render_template("home.html")
-    
+
+
+@app.route("/extra-info")
+def extraInfo():
+    return render_template("extra-info.html")
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
     else:
-      email = request.form["email"]
-      password = request.form["password"]
+        email = request.form["email"]
+        password = request.form["password"]
 
-      if email == "" or password == "":
-        return render_template("login", msg="Please enter required fields.")
-      
-      user = User.query.filter(email==email and password==password).all()
-      if len(user) == 0:
-        session['user_id'] = user.id
-        session['name'] = user.name
-        session['email'] = user.email
+        if email == "" or password == "":
+            return render_template("login", msg="Please enter required fields.")
+
+        users = User.query.all()
+        if len(users) == 0:
+            return render_template(
+                "login.html", msg="Username or Password incorrect. Please try again."
+            )
+
+        for user in users:
+            if user.email == email and user.password == password:
+                session["user_id"] = user.id
+                session["name"] = user.name
+                session["email"] = user.email
+                session["userType"] = user.user_type
+
+                if user.status == 0:
+                    return redirect(url_for("extraInfo"))
+
         return redirect(url_for("index"))
-      
-      return render_template("login.html", msg="Username or Password incorrect. Please try again.")
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -73,12 +89,13 @@ def register():
             return render_template("register.html", msg="Please enter required fields.")
 
         if db.session.query(User).filter(User.email == email).count() != 0:
-          return render_template("login", msg="The user email already exists. Please try to login.")
+            return render_template(
+                "login.html", msg="The user email already exists. Please try to login."
+            )
         else:
             data = User(name, email, password, userType, 0)
             db.session.add(data)
             db.session.commit()
-            session['user_id']= data
-            session['name'] = name
-            session['email'] = email
-            return redirect(url_for("index"))
+
+            # todo: Add message that user is created and try logining
+            return redirect(url_for("login")) 

@@ -1,0 +1,23 @@
+{% extends "auth-layout.html" %}
+
+{% block content %}
+<div class="logo">
+  <a>
+    <img src="static/images/resource/logo10.png" alt="Job Hunt" />
+  </a>
+</div>
+<div class="col-md-5 mb-4">
+  <form action="/user/extra-info" method="POST">
+    {% if msg %}
+    <div class="alert alert-warning" role="alert">
+      {{ msg }}
+    </div>
+    {% endif %}
+    <h2>{{ session.get('name') }}<small> tell more about you</small></h2>
+    <!-- ToDo: Add Additional form field -->
+    <div class="form-row">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
