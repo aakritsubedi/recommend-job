@@ -1,22 +1,70 @@
-{% extends "auth-layout.html" %}
-
-{% block content %}
+{% extends "auth-layout.html" %} {% block content %}
 <div class="logo">
   <a>
     <img src="static/images/resource/logo10.png" alt="Job Hunt" />
   </a>
 </div>
 <div class="col-md-5 mb-4">
-  <form action="/user/extra-info" method="POST">
+  <form method="POST">
     {% if msg %}
     <div class="alert alert-warning" role="alert">
       {{ msg }}
     </div>
     {% endif %}
-    <h2>{{ session.get('name') }}<small> tell more about you</small></h2>
+    <h2>{{ session.get('name') }},<small id='subtitle'> tell more about you</small></h2>
+    <div id="block0">
+      <div class="form-another">
+        Profile Picture:&nbsp;&nbsp;
+        <input type="file" name="profile_pic" />
+      </div>
+      <div class="form-another">
+        <textarea
+          name="about_us"
+          class="form-control"
+          placeholder="Write about you..."
+        ></textarea>
+      </div>
+    </div>
+    <div id="block1">
+      <div class="form-another">
+        CV:&nbsp;&nbsp;
+        <input type="file" name="cv" />
+      </div>
+      <div class="form-another">
+        <textarea
+          name="about_us"
+          class="form-control"
+          placeholder="Your skills Eg: HTML, CSS, Javascript (seperate by comma)"
+        ></textarea>
+      </div>
+    </div>
+    <div id="block2">
+      <table class="table" id="edu-table">
+        <tr>
+          <td></td>
+          <td><div class="add-btn" id="add-edu">Add Education</div></td>
+        </tr>
+        <tr>
+          <td><input type="text" class="form-control" placeholder="School Name"></td>
+          <td><input type="text" class="form-control" placeholder="Degree"></td>
+        </tr>
+      </table>
+    </div>
+    <div id="block3">
+      <table class="table" id="job-table">
+        <tr>
+          <td></td>
+          <td><div class="add-btn" id="add-job">Add Experience</div></td>
+        </tr>
+        <tr>
+          <td><input type="text" class="form-control" placeholder="Office Name"></td>
+          <td><input type="text" class="form-control" placeholder="Responsibilities"></td>
+        </tr>
+      </table>
+    </div>
     <!-- ToDo: Add Additional form field -->
     <div class="form-row">
-      <button type="submit">Submit</button>
+      <button id="next">Next</button>
     </div>
   </form>
 </div>

@@ -11826,3 +11826,12 @@ header.style4 .account-btns > li a,
     -o-transition: all 0.4s ease 0s;
     transition: all 0.4s ease 0s;
 }
+
+/* My CSS */
+.add-btn {
+    padding: 3px 6px;
+    border: 1px solid #000000;
+    display: inline;
+    float: right;
+    border-radius: 2px;
+}
