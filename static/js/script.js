@@ -362,12 +362,12 @@ $(document).on("ready", function() {
   });
 
   $("#add-edu").click(function() {
-    let education = '<tr><td><input type="text" class="form-control" placeholder="School Name"></td><td><input type="text" class="form-control" placeholder="Degree"></td></tr>';
+    let education = '<tr><td><input type="text" class="form-control" placeholder="School Name" name="school[]"></td><td><input type="text" class="form-control" placeholder="Degree" name="degree[]"></td></tr>';
     $("#edu-table").append(education);
   })
 
   $("#add-job").click(function() {
-    let job = '<tr><td><input type="text" class="form-control" placeholder="Office Name"></td><td><input type="text" class="form-control" placeholder="Responsibilities"></td></tr>';
+    let job = '<tr><td><input type="text" class="form-control" placeholder="Office Name" name="office[]"></td><td><input type="text" class="form-control" placeholder="Responsibilities" name="desc[]"></td></tr>';
     $("#job-table").append(job);
   })
   /* Table Scroll */
