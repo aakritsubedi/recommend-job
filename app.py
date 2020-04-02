@@ -1,75 +1,30 @@
 import os
-from flask import Flask, redirect, url_for, render_template, request, session
 import json
-from flask_sqlalchemy import SQLAlchemy
-from dotenv import load_dotenv
 from datetime import timedelta
+from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
+from flask import Flask, redirect, url_for, render_template, request, session
 
 load_dotenv()
 
-
 app = Flask(__name__)
 
-PIC_FOLDER = "static/uploads/profile/"
-CV_FOLDER = "static/uploads/cv/"
-app.config["PIC_FOLDER"] = PIC_FOLDER
-app.config["CV_FOLDER"] = CV_FOLDER
-app.secret_key = os.getenv("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.debug = os.getenv("DEBUG")
+app.secret_key = os.getenv("SECRET_KEY")
+app.config["CV_FOLDER"] = os.getenv("CV_FOLDER")
+app.config["PIC_FOLDER"] = os.getenv("PIC_FOLDER")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.permanent_session_lifetime = timedelta(minutes=5)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
 
 # Creating DB Object
 db = SQLAlchemy(app)
-
-
-class User(db.Model):
-    __tablename__ = "users"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    email = db.Column(db.String(255), unique=True)
-    password = db.Column(db.String(255))
-    user_type = db.Column(db.String(25), default="personal")
-    status = db.Column(db.Integer, default=0)
-
-    def __init__(self, name, email, password, user_type, status):
-        self.name = name
-        self.email = email
-        self.password = password
-        self.user_type = user_type
-        self.status = status
-
-
-class ExtraInfo(db.Model):
-    __tablename__ = "extra-info"
-    id = db.Column(db.Integer, primary_key=True)
-    photo = db.Column(db.String(100), default="defaultUser.png")
-    bio = db.Column(db.Text())
-    cv = db.Column(db.String(100))
-    skillsset = db.Column(db.Text())
-    education = db.Column(db.Text())
-    jobs = db.Column(db.Text())
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    user = db.relationship("User", backref=db.backref("users", uselist=False))
-    status = db.Column(db.Integer)
-
-    def __init__(self, photo, bio, cv, skillsset, education, jobs, user_id, status):
-        self.photo = photo
-        self.bio = bio
-        self.cv = cv
-        self.skillsset = skillsset
-        self.education = education
-        self.jobs = jobs
-        self.user_id = user_id
-        self.status = status
-
+from dbModel import *
 
 @app.route("/")
 def index():
     return render_template("home.html")
-
 
 @app.route("/extra-info", methods=["GET", "POST"])
 def extraInfo():
