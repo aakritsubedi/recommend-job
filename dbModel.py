@@ -16,7 +16,6 @@ class User(db.Model):
         self.user_type = user_type
         self.status = status
 
-
 class ExtraInfo(db.Model):
     __tablename__ = "extra-info"
     id = db.Column(db.Integer, primary_key=True)

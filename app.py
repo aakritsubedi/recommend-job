@@ -57,6 +57,10 @@ def extraInfo():
         db.session.add(data)
         db.session.commit()
 
+        user = User.query.filter_by(id=session.get('user_id')).first()
+        user.status = 1
+        db.session.commit()
+
         return redirect(url_for("index"))
 
 
