@@ -22,9 +22,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
 db = SQLAlchemy(app)
 from dbModel import *
 
+
 @app.route("/")
 def index():
     return render_template("home.html")
+
 
 @app.route("/extra-info", methods=["GET", "POST"])
 def extraInfo():
@@ -44,20 +46,20 @@ def extraInfo():
         edu = []
         for (school, degree) in zip(schools, degrees):
             edu.append({"school": school, "degree": degree})
-        edu=json.dumps(edu)
+        edu = json.dumps(edu)
         offices = request.form.getlist("office[]")
         descs = request.form.getlist("desc[]")
         jobs = []
         for (office, desc) in zip(offices, descs):
             jobs.append({"office": office, "desc": desc})
-        jobs=json.dumps(jobs)
+        jobs = json.dumps(jobs)
         user_id = session.get("user_id")
 
         data = ExtraInfo(photo, bio, cv, skillsset, edu, jobs, user_id, 1)
         db.session.add(data)
         db.session.commit()
 
-        user = User.query.filter_by(id=session.get('user_id')).first()
+        user = User.query.filter_by(id=session.get("user_id")).first()
         user.status = 1
         db.session.commit()
 
@@ -118,3 +120,11 @@ def register():
 
             # todo: Add message that user is created and try logining
             return redirect(url_for("login"))
+
+
+@app.route("/profile/<int:id>")
+def profile(id):
+    user = User.query.filter_by(id=id).first()
+    extraInfo = ExtraInfo.query.filter_by(user_id=id).first()
+    
+    return render_template("profile.html", user=user, extraInfo=extraInfo)
