@@ -11835,3 +11835,24 @@ header.style4 .account-btns > li a,
     float: right;
     border-radius: 2px;
 }
+
+.skills li {
+    display: inline-block;
+    max-width: 100px;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 1em;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #333;
+    font-size: 15px;
+    text-decoration: none;
+}
+.skills li:hover {
+    background-color: #DAE0E2;
+    color: #2C3335;
+}

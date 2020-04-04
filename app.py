@@ -1,4 +1,5 @@
 import os
+import ast 
 import json
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -127,4 +128,8 @@ def profile(id):
     user = User.query.filter_by(id=id).first()
     extraInfo = ExtraInfo.query.filter_by(user_id=id).first()
     
-    return render_template("profile.html", user=user, extraInfo=extraInfo)
+    educations = eval(extraInfo.education)
+    jobs = eval(extraInfo.jobs)
+    skills = extraInfo.skillsset.split(',')
+    
+    return render_template("profile.html", user=user, extraInfo=extraInfo, educations=educations, jobs=jobs, skills=skills)
