@@ -133,3 +133,39 @@ def profile(id):
     skills = extraInfo.skillsset.split(',')
     
     return render_template("profile.html", user=user, extraInfo=extraInfo, educations=educations, jobs=jobs, skills=skills)
+
+@app.route("/update/<string:task>", methods=['GET','POST'])
+def updateExtraInfo(task):
+    if request.method == 'POST':
+        id = request.form["id"]
+        extraInfo = ExtraInfo.query.filter_by(user_id=id).first()
+        if task == 'skills':
+            skillsset = request.form["skillsset"]
+        
+            extraInfo.skillsset=skillsset
+            db.session.commit()
+        elif task == 'education':
+            edu = eval(extraInfo.education)
+            schools = request.form.getlist("school[]")
+            degrees = request.form.getlist("degree[]")
+            for (school, degree) in zip(schools, degrees):
+                edu.append({"school": school, "degree": degree})
+
+            edu = json.dumps(edu)
+            extraInfo.education = edu
+            db.session.commit()
+        elif task == 'jobs':
+            offices = request.form.getlist("office[]")
+            descs = request.form.getlist("desc[]")
+            jobs = eval(extraInfo.jobs)
+            for (office, desc) in zip(offices, descs):
+                jobs.append({"office": office, "desc": desc})
+
+            jobs = json.dumps(jobs)
+            extraInfo.jobs = jobs
+            db.session.commit()
+
+    
+        return redirect("/profile/"+str(id))
+    
+    return 'FAILED'

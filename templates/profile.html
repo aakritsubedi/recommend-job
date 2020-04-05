@@ -6,18 +6,25 @@
         <aside class="col-lg-3 column border-right">
           <div class="widget">
             <div class="tree_widget-sec" style="text-align: center;">
-              <img src="/static/uploads/profile/{{extraInfo['photo']}}" alt="{{ user['name'] }}" class="img-thumbnail" style="width: 200px;height: 200px;"/>
-              <hr>
+              <img
+                src="/static/uploads/profile/{{extraInfo['photo']}}"
+                alt="{{ user['name'] }}"
+                class="img-thumbnail"
+                style="width: 200px; height: 200px;"
+              />
+              <hr />
               <ul>
                 <li>Name: {{ user['name']}}</li>
                 <li>Email: {{ user['email'] }}</li>
                 <li><b>{{ user['user_type']|upper }}</b> Account</li>
                 <li>
-                  <b>Status: </b> 
+                  <b>Status: </b>
                   {% if user['status'] == 1 %}
-                    <span class="text-success">Activated</span>
+                  <span class="text-success"
+                    >Activated <i class="la la-check-circle"></i
+                  ></span>
                   {% else %}
-                    <span class="text-danger">Not Activated</span>
+                  <span class="text-danger">Not Activated</span>
                   {% endif %}
                 </li>
               </ul>
@@ -326,7 +333,16 @@ Spent several years working on sheep on Wall Street. Had moderate success invest
             </div> -->
             <div class="padding-left">
               <div class="manage-jobs-sec">
-                <div class="border-title"><h3>{{ user['name'] }}'s Dashboard</h3><a href="#" title=""><i class="la la-plus"></i> Add Education</a></div>
+                <div class="border-title">
+                  <h3>{{ user['name'] }}'s Dashboard</h3>
+                  <a
+                    href="#"
+                    title=""
+                    data-toggle="modal"
+                    data-target="#addEducation"
+                    ><i class="la la-plus"></i> Add Education</a
+                  >
+                </div>
                 <div class="edu-history-sec">
                   <!-- {{ extraInfo['education'] }} -->
                   {% for education in educations %}
@@ -343,7 +359,12 @@ Spent several years working on sheep on Wall Street. Had moderate success invest
                   </div>
                   {% endfor %}
                 </div>
-                <div class="border-title"><h3>Work Experience</h3><a href="#" title=""><i class="la la-plus"></i> Add Experience</a></div>
+                <div class="border-title">
+                  <h3>Work Experience</h3>
+                  <a href="#" title="" data-toggle="modal" data-target="#jobs"
+                    ><i class="la la-plus"></i> Add Experience</a
+                  >
+                </div>
                 <div class="edu-history-sec">
                   {% for job in jobs %}
                   <div class="edu-history style2">
@@ -359,11 +380,16 @@ Spent several years working on sheep on Wall Street. Had moderate success invest
                   </div>
                   {% endfor %}
                 </div>
-                <div class="border-title"><h3>Professional Skills</h3><a href="#" title=""><i class="la la-plus"></i> Add Skills</a></div>
+                <div class="border-title">
+                  <h3>Professional Skills</h3>
+                  <a href="#" title="" data-toggle="modal" data-target="#skills"
+                    ><i class="la la-plus"></i> Add Skills</a
+                  >
+                </div>
                 <div style="padding: 25px;">
                   <ul class="skills">
                     {% for skill in skills %}
-                      <li title="{{ skill }}">{{ skill }}</li>
+                    <li title="{{ skill }}">{{ skill }}</li>
                     {% endfor %}
                   </ul>
                 </div>
@@ -375,4 +401,187 @@ Spent several years working on sheep on Wall Street. Had moderate success invest
     </div>
   </div>
 </section>
+<!-- Add Education Modal -->
+<div
+  class="modal fade"
+  id="addEducation"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="education"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <i class="la la-graduation-cap"></i>
+          Add Education
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/update/education" method="POST">
+        <div class="modal-body">
+          <input
+            type="text"
+            hidden="true"
+            name="id"
+            value="{{ session.get('user_id')}}"
+          />
+          <table class="table" id="edu-table">
+            <tr>
+              <td></td>
+              <td><div class="add-btn" id="add-edu">Add Education</div></td>
+            </tr>
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="School Name"
+                  name="school[]"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Degree"
+                  name="degree[]"
+                />
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Add Education</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Add Work Experience Modal -->
+<div
+  class="modal fade"
+  id="jobs"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="jobs"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <i class="la la-cubes"></i>
+          Add Experience
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/update/jobs" method="POST">
+        <div class="modal-body">
+          <input
+            type="text"
+            hidden="true"
+            name="id"
+            value="{{ session.get('user_id')}}"
+          />
+          <table class="table" id="job-table">
+            <tr>
+              <td></td>
+              <td><div class="add-btn" id="add-job">Add Experience</div></td>
+            </tr>
+            <tr>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Office Name"
+                  name="office[]"
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Responsibilities"
+                  name="desc[]"
+                />
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Add Experience</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Add Skills -->
+<div
+  class="modal fade"
+  id="skills"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="skills"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          <i class="la la-th-list"></i>
+          Add Skills
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/update/skills" method="POST">
+        <div class="modal-body">
+          <input
+            type="text"
+            hidden="true"
+            name="id"
+            value="{{ session.get('user_id')}}"
+          />
+          <textarea name="skillsset" class="form-control">
+{{ extraInfo['skillsset'] }}</textarea
+          >
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}
